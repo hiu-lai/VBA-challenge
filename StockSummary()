@@ -1,0 +1,75 @@
+Sub StockSummary()
+    ' Set Variables
+    Dim tickerCode As String
+    Dim RowNum As Integer
+    Dim CloseVal As Double
+    Dim openVal As Double
+    
+    TotSheets = Worksheets.Count
+    
+    For wksheets = 1 To TotSheets
+        Worksheets(wksheets).Activate
+        ' Set Heading for output table
+        Range("J1") = "Ticker"
+        Range("K1") = "Yearly Change"
+        Range("L1") = "Percent Change"
+        Range("M1") = "Total Stock Volume"
+        
+        Range("P2") = "Greatest % Increase"
+        Range("P3") = "Greatest % Decrease"
+        Range("P4") = "Greatest Total Volume"
+        
+        Range("Q1") = "Ticker"
+        Range("R1") = "Value"
+    
+        ' Count the number of rows in table
+        tblastrow = Cells(Rows.Count, 1).End(xlUp).Row
+        ' Set output start row num
+        j = 1
+    
+        ' Set loop starting row
+        StartRow = 2
+        StockVal = Cells(StartRow, 7).Value
+    
+        ' Loop for ticker code change
+        For i = StartRow To tblastrow
+            openVal = Cells(StartRow, 3).Value
+            tickerCode = Cells(i, 1).Value
+            ' Check for changes in ticker code then print and calculate output
+            If (Cells(i, 1).Value = Cells(i + 1, 1).Value) Then
+                StockVal = StockVal + Cells(i + 1, 7).Value
+            Else:
+                StartRow = i + 1
+                j = j + 1
+                CloseVal = Cells(i, 6).Value
+                Cells(j, 10).Value = Cells(i, 1).Value
+                Cells(j, 11).Value = CloseVal - openVal
+                If openVal > 0 Then
+                    Cells(j, 12).Value = Format(((CloseVal - openVal) / openVal), "Percent")
+                End If
+                Cells(j, 13).Value = StockVal
+                StockVal = Cells(i + 1, 7).Value
+            End If
+        Next i
+        Range("M2:M" & tblastrow).NumberFormat = "##0"
+        
+        ' Conditional Formatting
+        '
+        Dim ConditionalRange As Range
+        Set ConditionalRange = Range("L2:L" & tblastrow)
+        
+        'Remove existing Conditions
+        Cells.FormatConditions.Delete
+        
+        ' Condition 1 - Red if less than zero
+        ConditionalRange.FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, _
+            Formula1:="=0"
+        ConditionalRange.FormatConditions(1).Interior.Color = RGB(255, 0, 0)
+                
+        
+        ' Condition 2 - Green if greater than zero
+        ConditionalRange.FormatConditions.Add Type:=xlCellValue, Operator:=xlGreater, _
+            Formula1:="=0"
+        ConditionalRange.FormatConditions(2).Interior.Color = RGB(0, 255, 0)
+    Next wksheets
+End Sub
