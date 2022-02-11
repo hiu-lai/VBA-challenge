@@ -51,7 +51,7 @@ Sub StockSummary()
                 StockVal = Cells(i + 1, 7).Value
             End If
         Next i
-        Range("M2:M" & tblastrow).NumberFormat = "##0"
+        Range("M2:M" & tblastrow).NumberFormat = "0"
         
         ' Conditional Formatting
         '
@@ -71,5 +71,31 @@ Sub StockSummary()
         ConditionalRange.FormatConditions.Add Type:=xlCellValue, Operator:=xlGreater, _
             Formula1:="=0"
         ConditionalRange.FormatConditions(2).Interior.Color = RGB(0, 255, 0)
+        
+        'Bonus
+        ' Populating Ticker Values
+        Range("R2").Value = Format(WorksheetFunction.Max(Range("L2:L" & tblastrow)), "Percent")
+        Range("R3").Value = Format(WorksheetFunction.Min(Range("L2:L" & tblastrow)), "Percent")
+        Range("R4").Value = WorksheetFunction.Max(Range("M2:M" & tblastrow))
+        Range("R4").NumberFormat = "0"
+        
+        Range("Q2") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R2"), Range("L2:L" & tblastrow), 0))
+        Range("Q3") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R3"), Range("L2:L" & tblastrow), 0))
+        Range("Q4") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R4"), Range("M2:M" & tblastrow), 0))
     Next wksheets
 End Sub
+
+Sub DataSummary()
+    tblastrow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+    ' Populating Ticker Values
+    Range("R2").Value = Format(WorksheetFunction.Max(Range("L2:L" & tblastrow)), "Percent")
+    Range("R3").Value = Format(WorksheetFunction.Min(Range("L2:L" & tblastrow)), "Percent")
+    Range("R4").Value = WorksheetFunction.Max(Range("M2:M" & tblastrow))
+    Range("R4").NumberFormat = "0"
+        
+    Range("Q2") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R2"), Range("L2:L" & tblastrow), 0))
+    Range("Q3") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R3"), Range("L2:L" & tblastrow), 0))
+    Range("Q4") = WorksheetFunction.Index(Range("J2:J" & tblastrow), WorksheetFunction.Match(Range("R4"), Range("M2:M" & tblastrow), 0))
+End Sub
+
