@@ -14,10 +14,14 @@ Please follow the steps below to summarize data for workbook "Multiple_year_stoc
 
 Note: The whole process takes approx 2 - 3 minutes to complete
 
+![alt text](https://github.com/hiu-lai/VBA-challenge/blob/3d52c59516aa326d010ef3662ca6a656e72738c2/image/How-to-run-macro.gif)
+
+
 ## Expected Results
 As long as the first 7 data columns remain the same, the script has been designed to;
   * Workout the best output location to ensure no data is overwritten. 
   * All columns are presented in a readable format.
+  * Update all worksheets with 1 click
 
 ### 2018
 ![alt text](https://github.com/hiu-lai/VBA-challenge/blob/b97b5b95d091e1fee060a477ac2304cfc102c81f/image/2018_AAB_AIA.png)
